@@ -45,10 +45,52 @@
   }
   .nav a { color: inherit; text-decoration: none; }
   .logo { font: 700 16px/36px var(--sans); letter-spacing: -.02em; color: #0a0a0a; }
-  .links { display: flex; gap: 24px; list-style: none; }
-  .links a { font: 400 16px/36px var(--sans); letter-spacing: -.02em; color: #262626; position: relative; }
-  .links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 1.5px; background: var(--blue); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
-  .links a:hover::after { transform: scaleX(1); }
+  .links { display: flex; gap: 4px; list-style: none; }
+  .links > li { position: static; }
+  .tl {
+    display: block; font: 400 16px/36px var(--sans); letter-spacing: -.02em; color: #262626;
+    padding: 0 14px; border-radius: 999px; transition: background .2s, color .2s;
+  }
+  .links > li:hover > .tl, .links > li:focus-within > .tl { background: #e8e8e8; color: #0a0a0a; }
+
+  /* mega menu */
+  .mega {
+    position: absolute; top: calc(var(--nav-h) - 14px); right: 40px; width: 900px;
+    padding-top: 14px; /* hover bridge */
+    opacity: 0; visibility: hidden; transform: translateY(-6px) scale(.985); transform-origin: top right;
+    transition: opacity .22s ease, transform .28s var(--spring), visibility 0s linear .28s;
+  }
+  .has-mega:hover > .mega, .has-mega:focus-within > .mega {
+    opacity: 1; visibility: visible; transform: none; transition-delay: 0s;
+  }
+  .mega > * { position: relative; }
+  .mega::before {
+    content: ""; position: absolute; inset: 14px 0 0 0; border-radius: 16px;
+    background: #fff; border: 1px solid #e5e5e5;
+    box-shadow: 0 24px 60px -20px rgba(0,0,0,.18), 0 4px 14px rgba(0,0,0,.05);
+  }
+  .mega-card {
+    margin: 10px 10px 0; display: grid; grid-template-columns: 1fr 1fr .8fr;
+    background: #f7f7f6; border: 1px solid #ececea; border-radius: 10px; padding: 14px 0;
+  }
+  .mcol { padding: 0 20px; display: flex; flex-direction: column; gap: 6px; }
+  .mcol + .mcol { border-left: 1px solid #e6e6e3; }
+  .mi { display: block; padding: 14px; border-radius: 8px; transition: background .18s; }
+  .mi:hover { background: #ededeb; }
+  .mi b { display: block; font: 500 15px/1.4 var(--sans); color: #0a0a0a; letter-spacing: -.01em; margin-bottom: 4px; }
+  .mi span { display: block; font: 400 15px/1.5 var(--sans); color: #7a7a76; }
+  .mi:hover b { color: var(--blue); }
+  .ml { display: block; padding: 10px 14px; border-radius: 8px; font: 500 15px/1.4 var(--sans); color: #262626; transition: background .18s, color .18s; }
+  .ml:hover { background: #ededeb; color: var(--blue); }
+  .mega-foot {
+    display: flex; justify-content: space-between; align-items: center; padding: 18px 34px 20px;
+    font: 400 15px/1 var(--sans); color: #7a7a76;
+  }
+  .mega-foot b { color: #0a0a0a; font-weight: 500; margin-right: 4px; }
+  .mega-foot a { color: #7a7a76; transition: color .2s; }
+  .mega-foot a i { font-style: normal; display: inline-block; transition: transform .2s; }
+  .mega-foot a:hover { color: #0a0a0a; }
+  .mega-foot a:hover i { transform: translateX(3px); }
   .menu-btn { display: none; font: 500 16px/36px var(--sans); background: none; border: 0; color: #262626; cursor: pointer; }
   @media (max-width: 760px) {
     :root { --nav-h: 64px; }
@@ -56,6 +98,8 @@
     .menu-btn { display: block; }
     .links { position: absolute; top: var(--nav-h); left: 0; right: 0; flex-direction: column; gap: 4px; padding: 12px 20px 20px; background: #f5f5f5; border-bottom: 1px solid #e5e5e5; display: none; }
     .nav.open .links { display: flex; }
+    .mega { display: none; }
+    .tl { padding: 0; }
   }
 
   /* ---------- hint + progress ---------- */
@@ -185,11 +229,29 @@
   <a class="logo" href="#">nara.studio</a>
   <button class="menu-btn" id="menuBtn" aria-expanded="false">Menu</button>
   <ul class="links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#service">Service</a></li>
-    <li><a href="#produk">Produk</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a class="tl" href="#about">About</a></li>
+    <li class="has-mega"><a class="tl" href="#service" aria-haspopup="true">Service</a>
+      <div class="mega" role="menu">
+        <div class="mega-card">
+          <div class="mcol"><a class="mi" href="#"><b>Brand identity</b><span>Logos, type and color systems<br>that feel like you</span></a><a class="mi" href="#"><b>UI / UX design</b><span>Interfaces people enjoy<br>using every day</span></a></div>
+          <div class="mcol"><a class="mi" href="#"><b>Web development</b><span>Fast, responsive sites built<br>with Next.js and care</span></a><a class="mi" href="#"><b>Motion & prototyping</b><span>Interactions and scroll stories<br>that bring ideas to life</span></a></div>
+          <div class="mcol side"><a class="ml" href="#">Process</a><a class="ml" href="#">Case studies</a><a class="ml" href="#">FAQ</a><a class="ml" href="#">Book a call</a></div>
+        </div>
+        <div class="mega-foot"><span><b>New</b> Scroll-story websites</span><a href="#">Learn more <i>→</i></a></div>
+      </div>
+    </li>
+    <li class="has-mega"><a class="tl" href="#produk" aria-haspopup="true">Produk</a>
+      <div class="mega" role="menu">
+        <div class="mega-card">
+          <div class="mcol"><a class="mi" href="#"><b>UI kits</b><span>Ready-made components<br>for your next product</span></a><a class="mi" href="#"><b>Templates</b><span>Landing pages you can<br>launch in a weekend</span></a></div>
+          <div class="mcol"><a class="mi" href="#"><b>Icon & ASCII packs</b><span>Playful assets in the<br>Nara Studio style</span></a><a class="mi" href="#"><b>Figma plugins</b><span>Small tools that speed<br>up everyday design work</span></a></div>
+          <div class="mcol side"><a class="ml" href="#">All products</a><a class="ml" href="#">Changelog</a><a class="ml" href="#">Licensing</a><a class="ml" href="#">Support</a></div>
+        </div>
+        <div class="mega-foot"><span><b>New</b> Stamp photo frames</span><a href="#">Learn more <i>→</i></a></div>
+      </div>
+    </li>
+    <li><a class="tl" href="#pricing">Pricing</a></li>
+    <li><a class="tl" href="#contact">Contact</a></li>
   </ul>
 </nav>
 
@@ -346,7 +408,7 @@
   /* ---- mobile menu ---- */
   const nav = document.getElementById('nav'), menuBtn = document.getElementById('menuBtn');
   menuBtn.addEventListener('click', () => { const o = nav.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', o); menuBtn.textContent = o ? 'Close' : 'Menu'; });
-  nav.querySelectorAll('.links a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); menuBtn.textContent = 'Menu'; }));
+  nav.querySelectorAll('.links .tl').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); menuBtn.textContent = 'Menu'; }));
 
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const tokens = { 1: 0, 2: 0 };
