@@ -17,6 +17,7 @@
     --sans: -apple-system, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif;
     --mono: "IBM Plex Mono", ui-monospace, monospace;
     --spring: cubic-bezier(.34, 1.56, .64, 1);
+    --nav-h: 85px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: #fff; color: #1a1a1a; font-family: var(--sans); }
@@ -26,14 +27,37 @@
   .scene { height: 420vh; position: relative; }
   .sticky {
     position: sticky; top: 0; height: 100vh; overflow: hidden;
-    display: grid; place-items: center;
+    display: grid; place-items: center; padding-top: var(--nav-h);
   }
   .stage {
-    position: relative; width: 1440px; height: 948px; flex: none;
+    position: relative; width: 1440px; height: 882px; flex: none;
     transform-origin: center center;
   }
   .pos { position: absolute; transform-origin: 0 0; }
   .anim { will-change: transform, opacity; }
+
+
+  /* ---------- navbar ---------- */
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 50; height: var(--nav-h);
+    display: flex; align-items: center; justify-content: space-between; padding: 24px 40px;
+    background: #f5f5f5; border-bottom: 1px solid #e5e5e5;
+  }
+  .nav a { color: inherit; text-decoration: none; }
+  .logo { font: 700 20px/36px var(--sans); letter-spacing: -.02em; color: #0a0a0a; }
+  .links { display: flex; gap: 24px; list-style: none; }
+  .links a { font: 400 20px/36px var(--sans); letter-spacing: -.02em; color: #262626; position: relative; }
+  .links a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 4px; height: 1.5px; background: var(--blue); transform: scaleX(0); transform-origin: left; transition: transform .3s ease; }
+  .links a:hover::after { transform: scaleX(1); }
+  .menu-btn { display: none; font: 500 16px/36px var(--sans); background: none; border: 0; color: #262626; cursor: pointer; }
+  @media (max-width: 760px) {
+    :root { --nav-h: 64px; }
+    .nav { padding: 14px 20px; }
+    .logo { font-size: 18px; }
+    .menu-btn { display: block; }
+    .links { position: absolute; top: var(--nav-h); left: 0; right: 0; flex-direction: column; gap: 4px; padding: 12px 20px 20px; background: #f5f5f5; border-bottom: 1px solid #e5e5e5; display: none; }
+    .nav.open .links { display: flex; }
+  }
 
   /* ---------- hint + progress ---------- */
   .hint {
@@ -82,7 +106,7 @@
     background: #fff;
   }
   .bio {
-    position: absolute; left: 28px; top: 10px; width: 350px; min-height: 108px;
+    position: absolute; left: 28px; top: 20px; width: 350px; min-height: 108px;
     font: 400 19px/27px var(--mono); color: var(--ink); white-space: pre;
   }
   .caret {
@@ -158,12 +182,24 @@
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><path id="stamp" d="M0 207.138C0.200524 207.148 0.402358 207.154 0.605469 207.154C0.673894 207.154 0.742406 207.153 0.810547 207.151C0.289271 208.465 0 209.896 0 211.395C4.28188e-06 211.598 0.00522804 211.799 0.015625 212H0V207.138ZM23.0332 0C23.3482 6.07433 28.3727 10.9032 34.5254 10.9033C40.6782 10.9033 45.7036 6.07444 46.0186 0H46.0498C46.3482 6.07443 51.1085 10.9033 56.9375 10.9033C62.7663 10.9031 67.5268 6.07432 67.8252 0H67.8555C68.1704 6.07445 73.1958 10.9033 79.3486 10.9033C85.5014 10.9033 90.5258 6.07441 90.8408 0H90.873C91.188 6.07428 96.2126 10.9031 102.365 10.9033C108.518 10.9033 113.543 6.07444 113.858 0H113.891C114.206 6.07441 119.23 10.9033 125.383 10.9033C131.536 10.9033 136.56 6.07443 136.875 0H136.907C137.222 6.07444 142.248 10.9033 148.4 10.9033C154.553 10.9031 159.578 6.07431 159.893 0H159.925C160.24 6.07438 165.264 10.9032 171.417 10.9033C177.57 10.9033 182.595 6.07445 182.91 0H182.94C183.239 6.07429 187.999 10.9031 193.828 10.9033C199.657 10.9033 204.417 6.07443 204.716 0H204.747C205.062 6.07445 210.087 10.9033 216.24 10.9033C222.393 10.9032 227.417 6.07435 227.732 0H227.765C228.08 6.07433 233.104 10.9032 239.257 10.9033C245.41 10.9033 250.435 6.07444 250.75 0H250.781C251.096 6.07445 256.122 10.9033 262.274 10.9033C262.483 10.9033 262.69 10.8957 262.896 10.8848C262.885 11.0913 262.88 11.2995 262.88 11.5088C262.88 17.6616 267.709 22.6862 273.783 23.001V23.0322C267.709 23.347 262.88 28.3726 262.88 34.5254C262.88 40.6783 267.709 45.7037 273.783 46.0186V46.0498C267.709 46.3646 262.88 51.39 262.88 57.543C262.88 63.6959 267.709 68.7203 273.783 69.0352V69.0674C267.709 69.3822 262.88 74.4068 262.88 80.5596C262.88 86.7125 267.709 91.7379 273.783 92.0527V92.084C267.709 92.3988 262.88 97.4242 262.88 103.577C262.88 109.73 267.709 114.755 273.783 115.069V115.102C267.709 115.416 262.88 120.442 262.88 126.595C262.88 132.747 267.709 137.772 273.783 138.087V138.118C267.709 138.433 262.88 143.458 262.88 149.611C262.88 155.764 267.709 160.79 273.783 161.104V161.136C267.709 161.451 262.88 166.476 262.88 172.629C262.88 178.782 267.709 183.806 273.783 184.121V184.152C267.709 184.467 262.88 189.493 262.88 195.646C262.88 197.179 263.182 198.642 263.727 199.979C263.251 199.92 262.766 199.886 262.274 199.886C255.918 199.886 250.766 205.039 250.766 211.395C250.766 211.598 250.771 211.799 250.781 212H250.75C250.76 211.799 250.766 211.598 250.766 211.395C250.766 205.039 245.613 199.886 239.257 199.886C232.901 199.886 227.749 205.039 227.749 211.395C227.749 211.598 227.754 211.799 227.765 212H227.732C227.743 211.799 227.749 211.598 227.749 211.395C227.749 205.039 222.596 199.886 216.24 199.886C209.884 199.886 204.731 205.039 204.731 211.395C204.731 211.598 204.737 211.799 204.747 212H204.716C204.726 211.799 204.731 211.598 204.731 211.395C204.731 205.039 199.85 199.886 193.828 199.886C187.807 199.886 182.926 205.039 182.926 211.395C182.926 211.598 182.931 211.799 182.94 212H182.91C182.921 211.799 182.926 211.598 182.926 211.395C182.926 205.039 177.773 199.886 171.417 199.886C165.061 199.886 159.908 205.039 159.908 211.395C159.908 211.598 159.914 211.799 159.925 212H159.893C159.903 211.799 159.908 211.598 159.908 211.395C159.908 205.039 154.756 199.886 148.4 199.886C142.044 199.886 136.892 205.039 136.892 211.395C136.892 211.598 136.897 211.799 136.907 212H136.875C136.885 211.799 136.892 211.598 136.892 211.395C136.892 205.039 131.739 199.886 125.383 199.886C119.027 199.886 113.874 205.039 113.874 211.395C113.874 211.598 113.88 211.799 113.891 212H113.858C113.869 211.799 113.874 211.598 113.874 211.395C113.874 205.039 108.721 199.886 102.365 199.886C96.0094 199.886 90.8574 205.039 90.8574 211.395C90.8574 211.598 90.8626 211.799 90.873 212H90.8408C90.8512 211.799 90.8574 211.598 90.8574 211.395C90.8574 205.039 85.7046 199.886 79.3486 199.886C72.9926 199.886 67.8398 205.039 67.8398 211.395C67.8399 211.598 67.8451 211.799 67.8555 212H67.8252C67.835 211.799 67.8398 211.598 67.8398 211.395C67.8398 205.039 62.9588 199.886 56.9375 199.886C50.916 199.886 46.0342 205.039 46.0342 211.395C46.0342 211.598 46.04 211.799 46.0498 212H46.0186C46.029 211.799 46.0342 211.598 46.0342 211.395C46.0342 205.039 40.8814 199.886 34.5254 199.886C28.1695 199.886 23.0176 205.039 23.0176 211.395C23.0176 211.598 23.0228 211.799 23.0332 212H23.001C23.0114 211.799 23.0176 211.598 23.0176 211.395C23.0176 205.039 17.8647 199.886 11.5088 199.886C11.44 199.886 11.3712 199.886 11.3027 199.888C11.8239 198.575 12.1143 197.144 12.1143 195.646C12.1141 189.29 6.96141 184.137 0.605469 184.137C0.402365 184.137 0.200517 184.143 0 184.153V184.12C0.200531 184.131 0.40235 184.137 0.605469 184.137C6.96136 184.137 12.1141 178.985 12.1143 172.629C12.1143 166.273 6.96148 161.12 0.605469 161.12C0.402373 161.12 0.20051 161.125 0 161.136V161.104C0.200522 161.114 0.40236 161.12 0.605469 161.12C6.96148 161.12 12.1143 155.967 12.1143 149.611C12.1142 143.255 6.96144 138.103 0.605469 138.103C0.402363 138.103 0.200519 138.109 0 138.119V138.086C0.20053 138.096 0.402352 138.103 0.605469 138.103C6.96133 138.103 12.114 132.951 12.1143 126.595C12.1143 120.239 6.96148 115.086 0.605469 115.086C0.402371 115.086 0.200511 115.091 0 115.102V115.068C0.200537 115.079 0.402345 115.086 0.605469 115.086C6.96148 115.086 12.1143 109.933 12.1143 103.577C12.1143 97.2211 6.96148 92.0684 0.605469 92.0684C0.402361 92.0684 0.200521 92.0746 0 92.085V92.0518C0.200528 92.0622 0.402354 92.0684 0.605469 92.0684C6.96148 92.0684 12.1143 86.9156 12.1143 80.5596C12.114 74.2038 6.96133 69.0518 0.605469 69.0518C0.402369 69.0518 0.200513 69.057 0 69.0674V69.0342C0.200535 69.0446 0.402346 69.0518 0.605469 69.0518C6.96144 69.0518 12.1142 63.8989 12.1143 57.543C12.1143 51.187 6.96148 46.0342 0.605469 46.0342C0.402377 46.0342 0.200506 46.0394 0 46.0498V46.0176C0.200526 46.028 0.402356 46.0342 0.605469 46.0342C6.96148 46.0342 12.1143 40.8814 12.1143 34.5254C12.1141 28.1695 6.96137 23.0176 0.605469 23.0176C0.402367 23.0176 0.200515 23.0228 0 23.0332V23C0.200533 23.0104 0.402348 23.0176 0.605469 23.0176C6.9614 23.0176 12.1141 17.8647 12.1143 11.5088C12.1143 11.3005 12.1076 11.0933 12.0967 10.8877C17.9787 10.5916 22.6961 5.8797 23.001 0H23.0332ZM272.936 207.06C273.215 207.095 273.498 207.124 273.783 207.139V212H273.767C273.777 211.799 273.783 211.598 273.783 211.395C273.783 209.861 273.48 208.398 272.936 207.06ZM273.783 0.015625C273.777 0.0159456 273.771 0.0162712 273.765 0.0166016C273.765 0.0110493 273.766 0.00555432 273.767 0H273.783V0.015625ZM0.0166016 0.0136719C0.0110482 0.0139519 0.0055513 0.0153371 0 0.015625V0H0.015625C0.0158616 0.00456255 0.0163597 0.00911073 0.0166016 0.0136719Z"/></defs></svg>
 
+<nav class="nav" id="nav">
+  <a class="logo" href="#">nara.studio</a>
+  <button class="menu-btn" id="menuBtn" aria-expanded="false">Menu</button>
+  <ul class="links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#service">Service</a></li>
+    <li><a href="#produk">Produk</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
 <section class="scene" id="scene">
   <div class="sticky" id="sticky">
     <div class="stage" id="stage">
 
       <!-- ===== STEP 3: photos & friends (drawn first so papers sit on top) ===== -->
-      <div class="pos pop" data-par="14" style="left:133px;top:179px;--d:.05s">
+      <div class="pos pop" data-par="14" style="left:102px;top:128px;--d:.05s">
         <div class="anim"><div class="float" style="--t:7s">
           <div class="circle" style="background:var(--pink)">
             <pre class="ascii" style="color:#fff">  .:::.   .:::.
@@ -177,7 +213,7 @@
         </div></div>
       </div>
 
-      <div class="pos pop" data-par="10" style="left:1202px;top:634px;transform:rotate(18deg);--d:.35s;--spin:20deg">
+      <div class="pos pop" data-par="10" style="left:1171px;top:583px;transform:rotate(18deg);--d:.35s;--spin:20deg">
         <div class="anim"><div class="float" style="--t:8s;--fd:-2s">
           <div class="circle" style="background:var(--yellow)">
             <pre class="ascii" style="color:#e8558f">    .--.
@@ -192,13 +228,13 @@
         </div></div>
       </div>
 
-      <div class="pos pop" data-par="18" style="left:907px;top:298px;transform:rotate(19.1deg);--d:.45s">
+      <div class="pos pop" data-par="18" style="left:876px;top:247px;transform:rotate(19.1deg);--d:.45s">
         <div class="anim"><div class="float" style="--t:5.5s;--fd:-1s">
           <div class="sticker name"><span>爱</span></div>
         </div></div>
       </div>
 
-      <div class="pos pop" data-par="16" style="left:559px;top:638px;transform:rotate(7deg);--d:.55s;--spin:16deg">
+      <div class="pos pop" data-par="16" style="left:528px;top:587px;transform:rotate(7deg);--d:.55s;--spin:16deg">
         <div class="anim"><div class="float" style="--t:6.5s;--fd:-3s">
           <div class="sticker blue-st"><pre>    <span style="color:#e25a8c">(o)</span>
  -. `|'
@@ -207,7 +243,7 @@
         </div></div>
       </div>
 
-      <div class="pos pop" data-par="22" style="left:1020px;top:111px;--d:.15s;--spin:10deg">
+      <div class="pos pop" data-par="22" style="left:989px;top:60px;--d:.15s;--spin:10deg">
         <div class="anim">
           <div class="photo" style="--frame:#000;--ix:22px;--iw:230px;--ih:151px" role="button" tabindex="0" aria-label="Flip photo">
             <div class="inner">
@@ -230,7 +266,7 @@
         </div>
       </div>
 
-      <div class="pos pop" data-par="20" style="left:120px;top:595px;--d:.25s;--spin:-12deg">
+      <div class="pos pop" data-par="20" style="left:89px;top:544px;--d:.25s;--spin:-12deg">
         <div class="anim">
           <div class="photo" style="--frame:#f472b6;--back-ink:#1a1a1a;--ix:23px;--iw:227px;--ih:149px" role="button" tabindex="0" aria-label="Flip photo">
             <div class="inner">
@@ -254,7 +290,7 @@
       </div>
 
       <!-- ===== STEP 1: blue paper + writing ===== -->
-      <div class="pos note" data-par="5" style="left:334px;top:291px;transform:rotate(-10.1deg)">
+      <div class="pos note" data-par="5" style="left:303px;top:240px;transform:rotate(-10.1deg)">
         <div class="anim" style="position:relative;width:458px;height:271px;background:#2f4bff">
           <i class="hole" style="left:41px;top:14px"></i><i class="hole" style="left:82px;top:14px"></i><i class="hole" style="left:123px;top:14px"></i><i class="hole" style="left:164px;top:14px"></i><i class="hole" style="left:205px;top:14px"></i><i class="hole" style="left:246px;top:14px"></i><i class="hole" style="left:287px;top:14px"></i><i class="hole" style="left:328px;top:14px"></i><i class="hole" style="left:369px;top:14px"></i><i class="hole" style="left:410px;top:14px"></i>
           <div class="intro" id="intro">
@@ -268,14 +304,14 @@
       </div>
 
       <!-- ===== STEP 2: white paper + typing ===== -->
-      <div class="pos quote" data-par="6" style="left:763px;top:437px">
+      <div class="pos quote" data-par="6" style="left:732px;top:386px">
         <div class="anim" style="position:relative;width:387px;height:162px">
           <div class="white-paper"></div>
           <div class="bio"><span id="typed"></span><span class="caret" id="caret"></span></div>
         </div>
       </div>
 
-      <div class="pos tail" data-par="6" style="left:1062px;top:563px;transform:rotate(-1.3deg)">
+      <div class="pos tail" data-par="6" style="left:1031px;top:512px;transform:rotate(-1.3deg)">
         <div class="anim">
           <svg width="94" height="38" viewBox="0 0 94 38"><path d="M0 0H94L0 38Z" fill="#ff6a00"/></svg>
         </div>
@@ -301,11 +337,17 @@
 
   /* ---- fit the 1440×948 artboard to any screen ---- */
   function fit() {
-    const s = Math.min(innerWidth / 1440, innerHeight / 948) * 0.96;
+    const navH = document.querySelector('.nav').offsetHeight;
+    const s = Math.min(innerWidth / 1440, (innerHeight - navH) / 882) * 0.98;
     stage.style.transform = `scale(${s})`;
-    stage.style.margin = `${(948 * s - 948) / 2}px ${(1440 * s - 1440) / 2}px`;
+    stage.style.margin = `${(882 * s - 882) / 2}px ${(1440 * s - 1440) / 2}px`;
   }
   addEventListener('resize', fit); fit();
+
+  /* ---- mobile menu ---- */
+  const nav = document.getElementById('nav'), menuBtn = document.getElementById('menuBtn');
+  menuBtn.addEventListener('click', () => { const o = nav.classList.toggle('open'); menuBtn.setAttribute('aria-expanded', o); menuBtn.textContent = o ? 'Close' : 'Menu'; });
+  nav.querySelectorAll('.links a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); menuBtn.textContent = 'Menu'; }));
 
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const tokens = { 1: 0, 2: 0 };
